@@ -36,14 +36,17 @@ export const Modal = ({ setIsOpen }) => {
 
   const finishTrans = async () => {
     try {
-      if (order.length > 0 && !input) {
+      if (order.length === 0 && !input) {
         return alert("harap pesan terlebih dahulu dan masukan nama!");
       }
       const sendData = await axios.post(
-        "http://localhost:4000/transaction/confirmOrder",
+        "http://localhost:4000/transaction/confirm",
         { customer_name: input }
       );
       alert(sendData.data.message);
+      fetchOrder();
+      setInput("");
+      setIsOpen((prev) => !prev);
     } catch (error) {
       console.log(error);
     }
@@ -79,7 +82,8 @@ export const Modal = ({ setIsOpen }) => {
 
   useEffect(() => {
     fetchOrder();
-  }, []);
+    console.log(input);
+  }, [input]);
   return (
     <div className="h-screen flex flex-col justify-center items-center absolute left-0 top-0 right-0 bg-black/60">
       {/* <div className="absolute left-0 right-0 top-0 bottom-0 h-[500px] w-[500px] bg-red-500"></div> */}
